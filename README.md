@@ -1,5 +1,4 @@
-# UIRS
-## **U**nified **I**ncident **R**eporting **S**ystem for Local &amp; Government Organisations
+# **U**nified **I**ncident **R**eporting **S**ystem for Local &amp; Government Organisations (UIRS)
 
 This is the code repository for the UIRS dissertation project, created for [Heriot-Watt University](www.hw.ac.uk)'s BSc. Computer Science degree (2020-21). This is not official.
 
