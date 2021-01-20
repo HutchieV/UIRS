@@ -1,0 +1,183 @@
+:root   {
+    --col-pub-nav:          white;
+    --col-pub-nav-cont:     white;
+    --col-pub-body:         white;
+    --col-pub-console-cont: white;
+    --col-acc-hover:        orange;
+
+    --pub-text-line-height: 25px;
+}
+
+*   {
+    box-sizing:     border-box;
+    margin:         0;
+    padding:        0;
+    font-family:    "Helvetica";
+    font-size:      1rem; /* W3C Recommends em */
+}
+
+.pub-nav-container   {
+    width:              100%;
+    background-color:   var(--col-pub-nav-cont);
+    position:           relative;
+    
+    display:            flex;
+    justify-content:    center;
+    align-items:        center;
+    border-bottom:      1px solid lightgrey;
+    /* -webkit-box-shadow: 0px -4px 5px 4px rgba(0,0,0,0.75);
+    -moz-box-shadow:    0px -4px 5px 4px rgba(0,0,0,0.75);
+    box-shadow:         0px -4px 5px 4px rgba(0,0,0,0.75); */
+
+    z-index:            100;
+}
+
+.pub-nav {
+    width:              100%;
+    background-color:   var(--col-pub-nav);
+    position:           relative;
+
+    display:            flex;
+    justify-content:    center;
+    align-items:        center;
+
+    z-index:            101;
+}
+
+.pub-nav-logo   {
+    font-weight:        bold;
+    letter-spacing:     2px;
+    flex-grow:          2;
+    padding-left:       10px;
+    padding-top:        10px;
+    padding-bottom:     10px;
+    font-size:          2rem;
+}
+
+.pub-main    {
+    width:              100%;
+    background-color:   var(--col-pub-body);
+    padding:            10px;
+
+    z-index:            1;
+}
+
+.pub-desc   {
+    margin-top:         20px;
+    line-height:        var(--pub-text-line-height);
+    margin-bottom:      20px;
+}
+
+.pub-console-cont   {
+    background-color:   var(--col-pub-console-cont);
+
+    display:            flex;
+    flex-direction:     column;
+    justify-content:    top;
+    align-items:        top;
+}
+
+.pub-console-postcode-cont  {
+    width:              100%;
+    background-color:   var(--col-pub-console-cont);
+}
+
+.pub-console-map-cont   {
+    background-color:   #ff9c9c;
+    margin-top:         10px;
+    flex-basis:         0;
+    width:              100%;
+
+    min-height:         30em;
+    display:            flex;
+    flex-direction:     column;
+    justify-content:    center;
+    align-items:        center;
+}
+
+.pub-console-map-cont #map {
+    height:             100%;
+    width:              100%;
+}
+
+.pub-console-map-cont p {
+    display:        block;
+    margin:         10px;
+    margin-left:    30px;
+    margin-right:   30px;
+    text-align:     center;
+}
+
+.pub-console-postcode-form   {
+    margin:             0.5rem;
+    margin-top:         0;
+
+    display:            flex;
+    flex-direction:     row;
+    justify-content:    center;
+    align-items:        center;
+}
+
+#pub-c-p-input  {
+    display:        block;
+    height:         3rem;
+    width:          70%;
+    padding-left:   1rem;
+    text-transform: uppercase;
+
+    border:         1px solid lightgrey;
+    border-radius:  15px 0 0 15px;
+}
+
+#pub-c-p-input:focus, #pub-c-p-input:hover  {
+    border:         3px solid var(--col-acc-hover);
+}
+
+#pub-c-p-submit {
+    display:        block;
+    height:         3rem;
+    width:          30%;
+
+    padding:        0;
+    margin:         0;
+    border:         1px solid lightgrey;
+    border-left:    0;
+    border-radius:  0 15px 15px 0;
+}
+
+#pub-c-p-submit:focus, #pub-c-p-submit:hover  {
+    border:         3px solid var(--col-acc-hover);
+}
+
+/* Desktop */
+@media screen and (min-width: 1200px)    {
+    .pub-nav {
+        width:  70%;
+    }
+
+    .pub-main   {
+        width:          70%;
+        margin-left:    auto;
+        margin-right:   auto;
+    }
+
+    .pub-console-cont   {
+        flex-direction:     row;
+    }
+
+    .pub-console-postcode-cont  {
+        width:              35%;
+    }
+    
+    .pub-console-map-cont   {
+        width:              65%;
+        margin-left:        15px;
+        margin-top:         0;
+    }
+
+    .pub-console-map-cont #map {
+        flex-basis:         initial;
+        height:             100%;
+        width:              100%;
+    }
+}
