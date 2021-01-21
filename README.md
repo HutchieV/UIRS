@@ -13,7 +13,7 @@ It will allow a member of the public to enter their postcode and receive informa
 Ensure you have MySQL / MariaDB and Apache / httpd installed. To do this on a standard Ubuntu Desktop / Server installation, use the following console commands (you will likely need sudo privileges):
 
 ```
-apt install apache2 mysql-server mysql-client libapache2-mod-php
+apt install apache2 mysql-server mysql-client libapache2-mod-php php-mysql
 ```
 
 You will also have to enable the Apache2's PHP module. UIRS was developed using PHP 7.2, so you may need to change this to your system's version:

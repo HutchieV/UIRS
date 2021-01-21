@@ -13,7 +13,7 @@
 -- NB: BIGINT is used to avoid int overflow
 
 -- ### If you want to reset the database, uncomment the following line
--- DROP DATABASE IF EXISTS uirs;
+DROP DATABASE IF EXISTS uirs;
 
 -- Create and use database
 CREATE DATABASE IF NOT EXISTS uirs;
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS user (
 CREATE TABLE IF NOT EXISTS token (
     token_id                BIGINT(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     token_value             VARCHAR(255),
-    token_created           DATETIME,
+    token_created           DATETIME DEFAULT CURRENT_TIMESTAMP,
     token_valid_from        DATETIME,
     token_valid_to          DATETIME,
     user_id                 BIGINT(10) UNSIGNED,
@@ -101,10 +101,21 @@ CREATE TABLE IF NOT EXISTS incident (
 );
 
 CREATE TABLE IF NOT EXISTS incident_location (
-    incident_id                 BIGINT(10) UNSIGNED,
+    incident_id                 BIGINT(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     pcon_id                     VARCHAR(15),
     FOREIGN KEY (incident_id)   REFERENCES incident(incident_id),
     FOREIGN KEY (pcon_id)       REFERENCES pcon(pcon_id)
+);
+
+
+-- ### LOG DATA
+CREATE TABLE IF NOT EXISTS req_log (
+    log_id                      BIGINT(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    log_time                    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    log_route                   VARCHAR(255),
+    log_ip                      VARCHAR(30),
+    log_session                 VARCHAR(100),
+    log_request                 TEXT
 );
 
 
