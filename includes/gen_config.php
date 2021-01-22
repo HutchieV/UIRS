@@ -4,9 +4,20 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 
+  // echo PHP_VERSION_ID;
+
   set_include_path(dirname(__FILE__));
 
+  if(PHP_VERSION_ID > 70299) {
+    session_set_cookie_params([
+      'secure'    => 'true',
+      'httponly'  => 'true',
+      'samesite'  => 'strict'
+    ]);
+  }
+
   session_start();
+  session_regenerate_id();
 
   function get_db_conn()  {
     $host     = "localhost";

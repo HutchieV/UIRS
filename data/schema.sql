@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS subscription_postcode (
 -- ### INCIDENT DATA
 CREATE TABLE IF NOT EXISTS incident (
     incident_id                 BIGINT(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    incident_date               DATETIME,
+    incident_date               DATETIME DEFAULT CURRENT_TIMESTAMP,
     incident_title_short        VARCHAR(255),
     incident_title_long         VARCHAR(255),
     incident_restrictions       TEXT,
@@ -96,6 +96,9 @@ CREATE TABLE IF NOT EXISTS incident (
     incident_start              DATETIME,
     incident_end                DATETIME,
     incident_last_updated       DATETIME,
+    incident_active             BOOLEAN,
+    incident_lat                VARCHAR(50),
+    incident_long               VARCHAR(50),
     org_id                      BIGINT(10) UNSIGNED,               
     FOREIGN KEY (org_id)        REFERENCES organisation(org_id)
 );
