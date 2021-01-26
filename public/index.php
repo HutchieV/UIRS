@@ -38,7 +38,7 @@
 
         <section class="pub-console-postcode-cont">
           <form class="pub-console-postcode-form" method="POST">
-            <input id="pub-c-p-input" type="text" placeholder="Postcode" name="postcode" <?php if($pc) echo "value='$pc'"; ?>></text>
+            <input id="pub-c-p-input" type="text" placeholder="Postcode" name="postcode" <?php if($pc) echo "value='$pc'"; ?>></input>
             <input id="pub-c-p-submit" type="submit" Value="Search"></input>
           </form>
           <div <?php if(!($pc_error_msg)) echo "style='visibility: hidden; margin: 0'"; ?>class="pub-c-p-error-cont">
@@ -62,22 +62,24 @@
               }
             ?>
           </div>
-          <div class="pub-in-cont" <?php if(!($pc_data)) echo "style='visibility: hidden; margin: 0'" ?>>
+          <div class="pub-in-cont" <?php if(!($in_data)) echo "style='display: none; margin: 0'" ?>>
             <?php
-              foreach($in_data as &$i)  {
-                echo "<div class='pub-in-pop-cont'>
-                        <span class='pub-in-pop-title'>".$i["incident_title_short"]."</span>
-                        <span class='pub-in-pop-org'>".$i["org_title"]."</span>
-                        <div class='pub-in-pop-times'>
-                          <span class='pub-in-pop-times-lbl'>Incident starts: </span><span class='pub-in-pop-times-value'>".$i["incident_start"]."</span>
-                        </div>
-                        <div class='pub-in-pop-times'>
-                          <span class='pub-in-pop-times-lbl'>Incident ends: </span><span class='pub-in-pop-times-value'>".$i["incident_end"]."</span>
-                        </div>
-                        <div class='pub-in-pop-link-cont'>
-                          <a href='/incident?i=".$i["incident_id"]."' class='pub-in-pop-link'>Read more ➔</a>
-                        </div>
-                      </div>";
+              if($in_data)  {
+                foreach($in_data as &$i)  {
+                  echo "<div class='pub-in-pop-cont'>
+                          <span class='pub-in-pop-title'>".$i["incident_title_short"]."</span>
+                          <span class='pub-in-pop-org'>".$i["org_title"]."</span>
+                          <div class='pub-in-pop-times'>
+                            <span class='pub-in-pop-times-lbl'>Incident starts: </span><span class='pub-in-pop-times-value'>".$i["incident_start"]."</span>
+                          </div>
+                          <div class='pub-in-pop-times'>
+                            <span class='pub-in-pop-times-lbl'>Incident ends: </span><span class='pub-in-pop-times-value'>".$i["incident_end"]."</span>
+                          </div>
+                          <div class='pub-in-pop-link-cont'>
+                            <a href='/incident?i=".$i["incident_id"]."' class='pub-in-pop-link'>Read more ➔</a>
+                          </div>
+                        </div>";
+                }
               }
             ?>
           </div>

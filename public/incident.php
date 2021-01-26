@@ -63,7 +63,7 @@
       $in_error_msg = null;
       $in_data = get_incident_details($conn);
       if(!($in_data)) {
-        $in_error_msg = "Error: This incident does not seem to exist";
+        $in_error_msg = "Error: This incident does not exist";
       }
 
       // print_r($in_data);
@@ -78,9 +78,16 @@
 
     <main class="pub-main">
 
-      <span><?php if(!($in_data)) echo $in_error_msg ?></span>
+      <span class="pub-landing-title"> 
+        <?php 
+          if(!($in_data)) {
+            echo $in_error_msg;
+          } else {
+            echo $in_data["incident_title_long"];
+          };
+        ?>
+      </span>
 
-      <span class="pub-landing-title"> <?php echo $in_data["incident_title_long"]; ?> </span>
       <span class="pub-i-m-id"> Incident #<?php echo $in_data["incident_id"] . " Posted by: " . $in_data["org_title"]; ?> </span>
       <span class="pub-i-m-id"> Last updated: <?php echo $in_data["incident_last_updated"] ?> </span>
 

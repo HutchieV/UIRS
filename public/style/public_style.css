@@ -1,16 +1,23 @@
 :root   {
-    --col-pub-nav:          white;
-    --col-pub-nav-cont:     white;
-    --col-pub-nav-text:     black;
-    --col-pub-body:         white;
-    --col-pub-console-cont: white;
-    --col-pub-footer:       white;
-    --col-acc-hover:        orange;
-    --col-pub-text:         black;
-    --col-pub-border:       lightgrey;
-    --col-pub-i-id:         rgb(84, 84, 84);
+    --col-background:           white;
+    --col-pub-nav:              white;
+    --col-pub-nav-cont:         white;
+    --col-pub-nav-text:         black;
+    --col-pub-body:             white;
+    --col-pub-console-cont:     white;
+    --col-pub-footer:           white;
+    --col-acc-hover:            orange;
+    --col-pub-text:             black;
+    --col-pub-border:           lightgrey;
+    --col-pub-i-id:             rgb(84, 84, 84);
+    --col-submit:               rgb(238, 238, 238);
+    --col-submit-text:          black;
+    --col-submit-select:        rgb(255, 255, 255);
+    --col-submit-text-select:   black;
 
-    --pub-text-line-height: 25px;
+    --pub-text-line-height:     25px;
+
+    --main-width-desktop:       60%;
 }
 
 *   {
@@ -33,21 +40,20 @@ a:hover, a:focus {
 
 body {
     position:           relative;
+    background-color:   var(--col-background);
+    color:              var(--col-pub-text);
 }
 
 .pub-nav-container   {
     width:              100%;
     background-color:   var(--col-pub-nav-cont);
-    height:             4rem;
+    /* height:             4rem; */
     color:              var(--col-pub-nav-text);
     
     display:            flex;
     justify-content:    center;
     align-items:        center;
-    border-bottom:      1px solid var(--col-pub-border);
-    /* -webkit-box-shadow: 0px -4px 5px 4px rgba(0,0,0,0.75);
-    -moz-box-shadow:    0px -4px 5px 4px rgba(0,0,0,0.75);
-    box-shadow:         0px -4px 5px 4px rgba(0,0,0,0.75); */
+    border-bottom:      3px solid var(--col-acc-hover);
 
     z-index:            100;
 }
@@ -67,13 +73,13 @@ body {
 
 .pub-nav-logo   {
     text-decoration:    none;
+    text-align:         center;
     font-weight:        bold;
     /* letter-spacing:     1px; */
     flex-grow:          2;
-    padding-left:       10px;
-    padding-top:        10px;
-    padding-bottom:     10px;
-    font-size:          2rem;
+    padding:            1rem;
+    font-size:          1.5rem;
+
     color:              var(--col-pub-nav-text);
 }
 
@@ -84,7 +90,7 @@ body {
 .pub-main    {
     width:              100%;
     background-color:   var(--col-pub-body);
-    padding:            10px;
+    padding:            1rem;
 
     z-index:            1;
 }
@@ -139,11 +145,11 @@ body {
 }
 
 .pub-console-map-cont p {
-    display:        block;
-    margin:         10px;
-    margin-left:    30px;
-    margin-right:   30px;
-    text-align:     center;
+    display:            block;
+    margin:             10px;
+    margin-left:        30px;
+    margin-right:       30px;
+    text-align:         center;
 }
 
 .pub-pcon-cont  {
@@ -173,7 +179,7 @@ body {
     /* padding-top:        1rem; */
     background-color:   var(--col-pub-console-cont);
     /* font-weight:        bold; */
-    height:             25rem;
+    height:             100%;
     font-size:          1rem;
     text-align:         left;
     overflow-y:         auto;
@@ -278,7 +284,7 @@ body {
     /* padding-left:   1rem;
     padding-right:  1rem; */
     border:         1px solid var(--col-pub-border);
-    border-radius:  15px 15px 15px 15px;
+    /* border-radius:  15px 15px 15px 15px; */
 }
 
 .pub-c-p-sub-btn:focus, .pub-c-p-sub-btn:hover  {
@@ -309,10 +315,10 @@ body {
     height:         3rem;
     width:          70%;
     padding-left:   1rem;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 
     border:         1px solid var(--col-pub-border);
-    border-radius:  15px 0 0 15px;
+    /* border-radius:  15px 0 0 15px; */
 }
 
 #pub-c-p-input:focus, #pub-c-p-input:hover  {
@@ -328,12 +334,17 @@ body {
     margin:         0;
     border:         1px solid var(--col-pub-border);
     border-left:    0;
-    border-radius:  0 15px 15px 0;
+    /* border-radius:  0 15px 15px 0; */
+
+    background-color:   var(--col-submit);
+    color:              var(--col-submit-text);
 }
 
 #pub-c-p-submit:focus, #pub-c-p-submit:hover  {
-    outline:        3px solid var(--col-acc-hover);
-    cursor:         pointer;
+    background-color:   var(--col-submit-select);
+    color:              var(--col-submit-text-select);
+    outline:            3px solid var(--col-acc-hover);
+    cursor:             pointer;
 }
 
 .pub-i-m-id {
@@ -359,6 +370,7 @@ body {
 .pub-in-map-cont    {
     display:            none;
     height:             20rem;
+    border:             1px solid var(--col-pub-border);
 }
 
 #in-map {
@@ -397,18 +409,97 @@ body {
     text-align:         left;
 }
 
+/* Admin */
+
+.adm-login-cont {
+    width:              100%;
+    display:            flex;
+    flex-direction:     column;
+}
+
+.adm-log-msg {
+    width:              100%;
+    padding:            1.5rem;
+}
+
+.adm-login-cont form {
+    width:              100%;
+    margin:             0;
+    padding:            0;
+    display:            flex;
+    flex-direction:     column;
+    justify-content:    flex-start;
+    align-items:        flex-start;
+}
+
+.adm-log-input-gen {
+    display:        block;
+    height:         3rem;
+    width:          100%;
+    padding-left:   1rem;
+    padding-right:  1rem;
+
+    border:         1px solid var(--col-pub-border);
+    /* border-radius:  15px 15px 15px 15px; */
+}
+
+.adm-log-lbl    {
+    display:            flex;
+    width:              100%;
+    padding-bottom:     0.5rem;
+    padding-top:        0.5rem;
+}
+
+#adm-log-submit {
+    display:        block;
+    height:         3rem;
+    width:          100%;
+    margin-bottom:  0.5rem;
+    margin-top:     1.5rem;
+
+    border:         1px solid var(--col-pub-border);
+    /* border-radius:  15px 15px 15px 15px; */
+
+    background-color:   var(--col-submit);
+    color:              var(--col-submit-text);
+}
+
+.adm-log-input-gen:focus, .adm-log-input-gen:hover  {
+    outline:        3px solid var(--col-acc-hover);
+}
+
+#adm-log-submit:focus, #adm-log-submit:hover  {
+    background-color:   var(--col-submit-select);
+    color:              var(--col-submit-text-select);
+    outline:            3px solid var(--col-acc-hover);
+    cursor:             pointer;
+}
+
 /* Medium Desktop */
-@media screen and (min-width: 1200px)    {
-    .pub-nav {
-        width:          80%;
+@media screen and (min-width: 1300px)    {
+    .pub-nav-logo   {
+        text-align:         left;
     }
 
+    .pub-nav {
+        width:          var(--main-width-desktop);
+    }
+    
     .pub-main   {
-        width:          80%;
+        width:          var(--main-width-desktop);
         margin-left:    auto;
         margin-right:   auto;
     }
 
+    .pub-footer-cont {
+        width:              var(--main-width-desktop);
+        margin-left:        auto;
+        margin-right:       auto;
+    }
+}
+
+/* Medium Desktop */
+@media screen and (min-width: 950px)    {
     .pub-console-cont   {
         flex-direction:     row;
     }
@@ -430,12 +521,6 @@ body {
         width:              100%;
     }
 
-    .pub-footer-cont {
-        width:              80%;
-        margin-left:        auto;
-        margin-right:       auto;
-    }
-    
     .pub-footer-f-cont     {
         flex-direction:     row;
     }
@@ -452,19 +537,28 @@ body {
     .pub-c-p-sub-cont   {
         flex-direction:     row;
     }
-}
-
-/* Desktop */
-@media screen and (min-width: 800px)    {
-    .pub-console-map-cont   {
-        margin-top:         0;
-    }
-
-    .pub-console-cont   {
-        flex-direction:     row;
-    }
 
     .pub-i-m-title-cont  {
         width:              40%;
+    }
+
+    /* Admin */
+
+    .adm-login-cont {
+        width:              100%;
+        display:            flex;
+        flex-direction:     row;
+    }
+    
+    .adm-log-msg {
+        width:              50%;
+    }
+    
+    .adm-login-cont form {
+        width:              50%;
+        padding-left:       2rem;
+        padding-right:      2rem;
+        padding-bottom:     1.5rem;
+        border-left:        1px solid var(--col-pub-border);
     }
 }

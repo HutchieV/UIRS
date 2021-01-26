@@ -22,7 +22,7 @@ USE uirs;
 
 -- ### USER / ORG DATA
 CREATE TABLE IF NOT EXISTS privilege (
-    priv_id                 BIGINT(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    priv_id                 BIGINT(10) UNSIGNED PRIMARY KEY,
     priv_title              VARCHAR(50)
 );
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS user (
     user_id                 BIGINT(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     user_username           VARCHAR(100),
     user_full_name          VARCHAR(100),
-    user_password           VARCHAR(100),
+    user_password           VARCHAR(255),
     user_created            DATETIME,
     org_id                  BIGINT(10) UNSIGNED,
     priv_id                 BIGINT(10) UNSIGNED,
