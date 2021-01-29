@@ -1,3 +1,8 @@
+<?php
+  include '/UIRS/includes/gen_config.php';
+  include 'api/token.class.php';
+?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -5,7 +10,6 @@
   <head>
 
     <?php
-      include '/UIRS/includes/gen_config.php';
       include 'public_meta.php';
     ?>
 

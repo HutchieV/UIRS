@@ -1,5 +1,26 @@
 :root   {
-    --col-background:           white;
+    /* --col-background:           #e4f3ff;
+    --col-pub-nav:              #161b22;
+    --col-pub-nav-cont:         #161b22;
+    --col-pub-nav-text:         rgb(237, 237, 237);
+    --col-pub-body:             #e4f3ff;
+    --col-pub-console-cont:     #e4f3ff;
+    --col-pub-footer:           #e4f3ff;
+    --col-acc-hover:            orange;
+    --col-pub-text:             black;
+    --col-pub-border:           black;
+    --col-pub-i-id:             rgb(84, 84, 84);
+    --col-pub-c-p-input:        #161b22;
+    --col-submit:               rgb(14, 179, 14);
+    --col-submit-text:          rgb(237, 237, 237);
+    --col-submit-select:        rgb(94, 232, 94);
+    --col-submit-text-select:   rgb(237, 237, 237); */
+
+    --pub-text-line-height:     25px;
+
+    --main-width-desktop:       60%;
+
+    --col-background:           rgb(255, 255, 255);
     --col-pub-nav:              white;
     --col-pub-nav-cont:         white;
     --col-pub-nav-text:         black;
@@ -10,14 +31,11 @@
     --col-pub-text:             black;
     --col-pub-border:           lightgrey;
     --col-pub-i-id:             rgb(84, 84, 84);
+    --col-pub-c-p-input:        white;
     --col-submit:               rgb(238, 238, 238);
     --col-submit-text:          black;
     --col-submit-select:        rgb(255, 255, 255);
     --col-submit-text-select:   black;
-
-    --pub-text-line-height:     25px;
-
-    --main-width-desktop:       60%;
 }
 
 *   {
@@ -38,10 +56,15 @@ a:hover, a:focus {
     outline:            3px solid var(--col-acc-hover);
 }
 
+html {
+    min-height:         100%;
+}
+
 body {
     position:           relative;
     background-color:   var(--col-background);
     color:              var(--col-pub-text);
+    min-height:         100vh;
 }
 
 .pub-nav-container   {
@@ -89,8 +112,10 @@ body {
 
 .pub-main    {
     width:              100%;
+    min-height:         100%;
     background-color:   var(--col-pub-body);
     padding:            1rem;
+    padding-bottom:     2rem;
 
     z-index:            1;
 }
@@ -190,7 +215,7 @@ body {
     align-items:        flex-start;
 
     border-top:         1px solid var(--col-pub-border);
-    border-bottom:      1px solid var(--col-pub-border);
+    /* border-bottom:      1px solid var(--col-pub-border); */
 }
 
 .pub-in-pop-cont    {
@@ -311,13 +336,16 @@ body {
 }
 
 #pub-c-p-input  {
-    display:        block;
-    height:         3rem;
-    width:          70%;
-    padding-left:   1rem;
+    display:            block;
+    height:             3rem;
+    width:              70%;
+    padding-left:       1rem;
+    background-color:   var(--col-pub-c-p-input);
+    /* color:              var(--col-pub-console-cont); */
     /* text-transform: uppercase; */
 
-    border:         1px solid var(--col-pub-border);
+    border:             1px solid var(--col-pub-border);
+    /* border:             0; */
     /* border-radius:  15px 0 0 15px; */
 }
 
@@ -333,6 +361,7 @@ body {
     padding:        0;
     margin:         0;
     border:         1px solid var(--col-pub-border);
+    /* border:         0; */
     border-left:    0;
     /* border-radius:  0 15px 15px 0; */
 
@@ -382,7 +411,7 @@ body {
     width:              100%;
     background-color:   var(--col-pub-footer);
     border-top:         1px solid var(--col-pub-border);
-    margin-top:         20px;
+    /* margin-top:         20px; */
 }
 
 .pub-footer-f-cont     {
@@ -403,6 +432,13 @@ body {
     font-size:          0.9rem;
     padding:            1rem;
     line-height:        1.6rem;
+}
+
+.pub-hr {
+    width:              100%;
+    height:             1px;
+    background-color:   var(--col-pub-border);
+    margin-bottom:      1.5rem;
 }
 
 .align-right    {
@@ -450,6 +486,10 @@ body {
     padding-top:        0.5rem;
 }
 
+.adm-log-err    {
+    color:              red;
+}
+
 #adm-log-submit {
     display:        block;
     height:         3rem;
@@ -473,6 +513,71 @@ body {
     color:              var(--col-submit-text-select);
     outline:            3px solid var(--col-acc-hover);
     cursor:             pointer;
+}
+
+.adm-logout-btn {
+    padding:            0;
+    margin:             0;
+    border:             none;
+    background-color:   var(--col-pub-footer);
+    font-weight:        bold;
+    text-decoration:    underline;
+}
+
+.adm-logout-btn:focus, .adm-logout-btn:hover  {
+    outline:            3px solid var(--col-acc-hover);
+    cursor:             pointer;
+}
+
+.adm-th {
+    background-color:   #eeeeee;
+    color:              var(--col-pub-text);
+}
+
+.adm-gen-table  {
+    width:              100%;
+    /* border:             1px solid var(--col-pub-border); */
+
+    display:            flex;
+    flex-direction:     column;
+    justify-content:    flex-start;
+    align-items:        flex-start; 
+    border-bottom:      1px solid var(--col-pub-border);
+}
+
+.adm-gen-table-row  {
+    text-decoration:    none;
+    font-weight:        normal;
+    display:            block;
+    width:              100%;
+
+    display:            flex;
+    flex-direction:     row;
+    justify-content:    space-between;
+    align-items:        flex-start; 
+    border:             1px solid var(--col-pub-border);
+    border-bottom:      0;
+}
+
+.adm-gen-table a:hover {
+    cursor:             pointer;
+
+}
+
+.adm-gen-table-field {
+    width:              25%;
+    text-decoration:    none;
+    text-align:         center;
+    font-weight:        normal;
+    overflow:           hidden;
+    padding:            0.2rem;
+
+    flex-grow:          2;
+    display:            flex;
+    flex-direction:     row;
+    justify-content:    center;
+    align-items:        center; 
+    /* border:             1px solid var(--col-pub-border); */
 }
 
 /* Medium Desktop */
@@ -511,7 +616,7 @@ body {
     .pub-console-map-cont   {
         flex-basis:         initial;
         width:              60%;
-        margin-left:        0.5rem;
+        margin-left:        1rem;
         margin-right:       0.5rem;
         margin-top:         0;
     }
@@ -527,7 +632,7 @@ body {
     
     .pub-footer-item    {
         padding:            1rem;
-        border-left:        1px solid var(--col-pub-border);
+        /* border-left:        1px solid var(--col-pub-border); */
     }
 
     .align-right    {

@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS incident (
 );
 
 CREATE TABLE IF NOT EXISTS incident_location (
-    incident_id                 BIGINT(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    incident_id                 BIGINT(10) UNSIGNED,
     pcon_id                     VARCHAR(15),
     FOREIGN KEY (incident_id)   REFERENCES incident(incident_id),
     FOREIGN KEY (pcon_id)       REFERENCES pcon(pcon_id)

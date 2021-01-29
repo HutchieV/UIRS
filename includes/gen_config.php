@@ -8,6 +8,9 @@
 
   set_include_path(dirname(__FILE__));
 
+  CONST BCRYPT_WORK_FACTOR  = 12;
+  CONST DOMAIN_NAME         = "uirs.localhost";
+
   if(PHP_VERSION_ID > 70299) {
     session_set_cookie_params([
       'secure'    => 'true',
@@ -18,6 +21,17 @@
 
   session_start();
   session_regenerate_id();
+
+  function sanitize_input($i)  {
+    /*
+      Sanitize input
+    */
+
+    $i = strip_tags($i);        // Remove dangerous tags
+    $i = htmlspecialchars($i);  // Escape any remaining special characters
+
+    return $i;
+  }
 
   function get_db_conn()  {
     $host     = "localhost";

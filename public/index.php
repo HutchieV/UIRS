@@ -1,3 +1,49 @@
+<?php
+  require '/UIRS/includes/gen_config.php';
+  require 'api/token.class.php';
+  require 'api/location.class.php';
+  
+  // require 'api/proc_postcode_req.php';
+
+  $pc_error_msg = null;
+  $pc           = null;
+  $pc_data      = null;
+  $r_data       = null;
+  $in_count     = null;
+  $in_data      = null;
+
+  function process_postcode($conn, &$pc, &$pc_data, &$r_data, &$in_data)
+  {
+    $pc = LocationAPI::validate_postcode($_POST["postcode"]);
+    if(!$pc) return false;
+
+    $pc_data = LocationAPI::get_postcode_by_postcode($conn, $pc);
+    if(!$pc_data) return false;
+
+    $r_data = LocationAPI::get_region_by_postcode($conn, $pc);
+    if(!$r_data) return false;
+
+    $in_data = LocationAPI::get_incidents_by_region_id($conn, $r_data["pcon_id"]);
+    if(!$in_data) return false;
+
+    return true;
+  }
+
+  if(isset($_POST["postcode"]))
+  {
+    try {
+      if(!process_postcode($conn, $pc, $pc_data, $r_data, $in_data))
+      {
+        $pc_error_msg = "Unknown postcode";
+      };
+      $in_count = count($in_data);
+    } catch(PDOException $e)  {
+      $pc_error_msg = "System error occured, please try again";
+    }
+  }
+
+?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -5,9 +51,7 @@
   <head>
 
     <?php
-      include '/UIRS/includes/gen_config.php';
       include 'public_meta.php';
-      include 'api/proc_postcode_req.php';
     ?>
 
     <title>
@@ -38,7 +82,7 @@
 
         <section class="pub-console-postcode-cont">
           <form class="pub-console-postcode-form" method="POST">
-            <input id="pub-c-p-input" type="text" placeholder="Postcode" name="postcode" <?php if($pc) echo "value='$pc'"; ?>></input>
+            <input id="pub-c-p-input" type="text" placeholder="Enter your postcode" name="postcode" <?php if($pc) echo "value='$pc'"; ?>></input>
             <input id="pub-c-p-submit" type="submit" Value="Search"></input>
           </form>
           <div <?php if(!($pc_error_msg)) echo "style='visibility: hidden; margin: 0'"; ?>class="pub-c-p-error-cont">

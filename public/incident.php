@@ -1,3 +1,9 @@
+<?php
+  require '/UIRS/includes/gen_config.php';
+  require 'api/token.class.php';
+  require 'api/location.class.php'
+?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -5,7 +11,6 @@
   <head>
 
     <?php
-      include '/UIRS/includes/gen_config.php';
       include 'public_meta.php';
     ?>
 
@@ -102,7 +107,9 @@
           <span class='pub-in-pop-times-lbl'>Incident ends: </span>
           <span class='pub-in-pop-times-value'> <?php echo $in_data["incident_end"] ?>    </span>
         </div>
-      </div>      
+      </div>
+
+      <div class="pub-hr"></div>
 
       <span class="pub-i-m-subtitle"> Restrictions </span>
 
