@@ -15,6 +15,14 @@ then
 
 	printf "$pword" | mysql -u "$uname" -p < "$DIR"/../data/schema.sql
 	exitc=$?
+	echo "Finished reset with exit code $exitc"
+
+	echo "Importing directory"
+	python3 "$DIR"/../data/proc_ons_data.py -d "$DIR"/../data/onspd_aug_2020.csv -p "$DIR"/../data/pcon_12_14.csv
+
+	echo "Importing demo data"
+	printf "$pword" | mysql -u "$uname" -p < "$DIR"/../data/demo.sql
+	exitc=$?
 	echo "Finished with exit code $exitc"
 else
 	echo "Cancelling"
