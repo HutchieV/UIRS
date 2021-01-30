@@ -76,7 +76,7 @@
      * Get region details by its region id.
      * 
      * @param  object $conn An open PDO database connection
-     * @param  string $r The input region id
+     * @param  string $rid The input region id
      * @return array|null Returns the region data if found, null otherwise
      */
     static function get_region_by_region_id($conn, $rid)
@@ -95,19 +95,39 @@
      * Get incident details by region id.
      * 
      * @param  object $conn An open PDO database connection
-     * @param  string $r The input region id
+     * @param  string $rid The input region id
      * @return array|null Returns incident data if found, null otherwise
      */
     static function get_incidents_by_region_id($conn, $rid)
     {
-      $q = $conn->prepare(' SELECT incident.* 
+      $q = $conn->prepare(' SELECT incident.*, organisation.*
                             FROM incident
                             INNER JOIN incident_location ON incident_location.incident_id=incident.incident_id
+                            INNER JOIN organisation ON incident.org_id=organisation.org_id
                             WHERE incident_location.pcon_id=:rid');
       $q->bindValue(':rid', $rid);
       $q->execute();
       
       return $q->fetchAll();
+    }
+
+    /**
+     * Get org details by incident id.
+     * 
+     * @param  object $conn An open PDO database connection
+     * @param  string $iid The input region id
+     * @return array|null Returns org data if found, null otherwise
+     */
+    static function get_org_by_incident_id($conn, $iid)
+    {
+      $q = $conn->prepare(' SELECT organisation.* 
+                            FROM organisation
+                            INNER JOIN incident ON incident.org_id=organisation.org_id
+                            WHERE incident.incident_id=:iid');
+      $q->bindValue(':iid', $iid);
+      $q->execute();
+      
+      return $q->fetch();
     }
 
   }

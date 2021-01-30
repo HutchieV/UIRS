@@ -3,8 +3,6 @@
   require 'api/token.class.php';
   require 'api/location.class.php';
   
-  // require 'api/proc_postcode_req.php';
-
   $pc_error_msg = null;
   $pc           = null;
   $pc_data      = null;
@@ -35,8 +33,11 @@
       if(!process_postcode($conn, $pc, $pc_data, $r_data, $in_data))
       {
         $pc_error_msg = "Unknown postcode";
-      };
-      $in_count = count($in_data);
+      }
+      else
+      {
+        $in_count = count($in_data);
+      }
     } catch(PDOException $e)  {
       $pc_error_msg = "System error occured, please try again";
     }
@@ -99,9 +100,9 @@
                 echo  '<span>' . 
                       $in_count . 
                       ' incident(s) in the <strong>' . 
-                      $pc_data["pcon_name"] . 
+                      $r_data["pcon_name"] . 
                       '</strong> region (' . 
-                      $pc_data["pcon_id"] . 
+                      $r_data["pcon_id"] . 
                       ')</span>';
               }
             ?>
@@ -178,7 +179,7 @@
           <?php
             if($pc_data)  {
               echo 'L.marker([' . $pc_data['postcode_lat'] . ',' . $pc_data['postcode_long'] .']).addTo(map)
-                      .bindPopup(\'' . $pc_data['pcon_name'] . '\')
+                      .bindPopup(\'' . $r_data['pcon_name'] . '\')
                       .openPopup();';
             };
 
