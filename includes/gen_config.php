@@ -4,6 +4,11 @@
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 
+  require 'api/db.class.php';
+  require 'api/token.class.php';
+  require 'api/location.class.php';
+  require 'api/exceptions.class.php';
+
   // echo PHP_VERSION_ID;
 
   set_include_path(dirname(__FILE__));
@@ -31,21 +36,6 @@
     $i = htmlspecialchars($i);  // Escape any remaining special characters
 
     return $i;
-  }
-
-  function get_db_conn()  {
-    $host     = "localhost";
-    $username = "uirs_backend";
-    $password = "uirs_backend_pword";
-    $database = "uirs";
-
-    try {
-      $conn = new PDO("mysql:host=$host;dbname=$database", $username, $password);
-      return $conn;
-    } catch(PDOException $e)  {
-      // echo "Connection failed: " . $e->getMessage();
-      return null;
-    }
   }
 
   function get_ip_address()   {
@@ -78,7 +68,7 @@
     $q->execute();
   }
 
-  $conn = get_db_conn();
+  $conn = DBAPI::get_db_conn();
   log_req($conn);
 
 ?>

@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS privilege (
 CREATE TABLE IF NOT EXISTS organisation (
     org_id                  BIGINT(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     org_title               VARCHAR(200),
-    org_icon                VARCHAR(200),
+    org_icon                VARCHAR(255),
     org_created             DATETIME
 );
 
@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS incident (
     incident_title_long         VARCHAR(255),
     incident_restrictions       TEXT,
     incident_description        TEXT,
+    incident_level              TINYINT,
     incident_start              DATETIME,
     incident_end                DATETIME,
     incident_last_updated       DATETIME,

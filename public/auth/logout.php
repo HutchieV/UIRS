@@ -1,6 +1,5 @@
 <?php
   include '/UIRS/includes/gen_config.php';
-  include 'api/token.class.php';
 
   if( !isset($_POST["auth_token"])
       || !isset($_SESSION["AUTH_TOKEN"])

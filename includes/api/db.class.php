@@ -22,6 +22,31 @@
       }
     }
 
+    /**
+     * Convert a MySQL datetime format string into
+     * a UNIX timestamp
+     * 
+     * @param string A string in MySQL datetime format
+     * @return int|null The datetime as a UNIX timestamp, null if fails
+     */
+    static function dt_to_timestamp($dt)
+    {
+      $ts = strtotime($dt);
+      return $ts;
+    }
+
+    static function ts_to_human_readable($ts)
+    {
+      return date('l, jS F Y', $ts);
+    }
+
+    static function dt_to_human_readable($dt)
+    {
+      $ts = self::dt_to_timestamp($dt);
+      if(!$ts) return null;
+      return date('l, jS F Y', $ts);
+    }
+
   }
 
 ?>

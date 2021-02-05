@@ -23,7 +23,7 @@
 
     <div class="pub-footer-item">
       <span class="pub-footer-subheader">Copyright</span>
-      Created by and © <a href="https://github.com/BCJMilne">Ben Milne</a> (with <a href="/licenses">exceptions</a>) as a dissertation project for <a href="https://www.hw.ac.uk">Heriot-Watt University</a> (2020-21)
+      Created by and © <a href="https://github.com/BCJMilne">Ben Milne</a> (<a href="/licenses">license exceptions</a>) as a dissertation project for <a href="https://www.hw.ac.uk">Heriot-Watt University</a> (2020-21)
     </div>
 
   </div>

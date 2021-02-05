@@ -1,6 +1,5 @@
 <?php
   include '/UIRS/includes/gen_config.php';
-  include 'api/token.class.php';
 
   Token_API::verify_session($conn);
 
@@ -37,11 +36,11 @@
 
     
 
-    <header>
+    <nav>
 
       <?php include 'public_nav.php'; ?>
 
-    </header>
+    </nav>
 
     <main class="pub-main">
 

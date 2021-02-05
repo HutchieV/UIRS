@@ -26,6 +26,24 @@
 
 
     /**
+     * Validate a given incident id.
+     * 
+     * @param  string $pc The input incident id
+     * @return string|null Returns the incident id if validated, null otherwise 
+     */
+    static function validate_incident_id($pc)
+    {
+      if(!(isset($_GET["i"]))) return null;
+
+      $in_req_id = strip_tags($_GET["i"]);            // Remove dangerous tags
+      $in_req_id = htmlspecialchars($in_req_id);      // Escape any remaining special characters
+      $in_req_id = str_replace(' ', '', $in_req_id);  // Remove spaces
+      
+      return $in_req_id;
+    }
+
+
+    /**
      * Get postcode data for a given postcode.
      * 
      * @param $pc The input postcode
@@ -93,6 +111,7 @@
 
     /**
      * Get incident details by region id.
+     * Also returns related org data.
      * 
      * @param  object $conn An open PDO database connection
      * @param  string $rid The input region id
@@ -104,11 +123,34 @@
                             FROM incident
                             INNER JOIN incident_location ON incident_location.incident_id=incident.incident_id
                             INNER JOIN organisation ON incident.org_id=organisation.org_id
-                            WHERE incident_location.pcon_id=:rid');
+                            WHERE incident_location.pcon_id=:rid
+                            ORDER BY incident_level DESC');
       $q->bindValue(':rid', $rid);
       $q->execute();
       
       return $q->fetchAll();
+    }
+
+    /**
+     * Get incident details by incident id.
+     * Also returns related org data.
+     * 
+     * @param  object $conn An open PDO database connection
+     * @param  string $iid The input incident id
+     * @return array|null Returns incident data if found, null otherwise
+     */
+    static function get_incident_by_incident_id($conn, $iid)
+    {
+      $q = $conn->prepare(' SELECT incident.*, organisation.*
+                            FROM incident
+                            INNER JOIN incident_location ON incident_location.incident_id=incident.incident_id
+                            INNER JOIN organisation ON incident.org_id=organisation.org_id
+                            WHERE incident.incident_id=:iid
+                            LIMIT 1');
+      $q->bindValue(':iid', $iid);
+      $q->execute();
+      
+      return $q->fetch();
     }
 
     /**

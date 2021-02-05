@@ -1,7 +1,5 @@
 <?php
   require '/UIRS/includes/gen_config.php';
-  require 'api/token.class.php';
-  require 'api/location.class.php';
   
   $pc_error_msg = null;
   $pc           = null;
@@ -13,16 +11,16 @@
   function process_postcode($conn, &$pc, &$pc_data, &$r_data, &$in_data)
   {
     $pc = LocationAPI::validate_postcode($_POST["postcode"]);
-    if(!$pc) return false;
+    if(!$pc) throw new ProcessPostcodeException("Invalid postcode");
 
     $pc_data = LocationAPI::get_postcode_by_postcode($conn, $pc);
-    if(!$pc_data) return false;
+    if(!$pc_data) throw new ProcessPostcodeException("Unknown postcode");
 
     $r_data = LocationAPI::get_region_by_postcode($conn, $pc);
-    if(!$r_data) return false;
+    if(!$r_data) throw new ProcessPostcodeException("A system error occured (001), please try again");
 
     $in_data = LocationAPI::get_incidents_by_region_id($conn, $r_data["pcon_id"]);
-    if(!$in_data) return false;
+    // if(!$in_data) throw new ProcessPostcodeException("A system error occured (002), please try again");
 
     return true;
   }
@@ -38,8 +36,10 @@
       {
         $in_count = count($in_data);
       }
+    } catch(ProcessPostcodeException $e) {
+      $pc_error_msg = $e->message();
     } catch(PDOException $e)  {
-      $pc_error_msg = "System error occured, please try again";
+      $pc_error_msg = "A system error occured (003), please try again";
     }
   }
 
@@ -63,18 +63,28 @@
 
   <body>
 
-    <header>
+    <nav>
 
       <?php include 'public_nav.php'; ?>
+
+    </nav>
+
+    <header class="pub-i-m-header-cont">
+      
+      <div class="pub-main pub-i-m-header-inner">
+
+        <span class="pub-landing-title">Welcome to the Unified Incident Reporting System</span>
+
+      </div>
 
     </header>
 
     <main class="pub-main">
 
-      <span class="pub-landing-title">Welcome to the Unified Incident Reporting System</span>
-
       <section class="pub-desc pub-underline">
-        This portal provides access to a nationwide database of on-going incidents as reported by health boards, councils, 
+      <span class="pub-i-m-subtitle">What is the UIR System?</span>
+
+        This portal provides access to a nationwide database of future and on-going incidents reported by health boards, councils, 
         police departments and national governments. To view data for your region, enter your postcode in the search bar below and
         click search.
       </section>
@@ -111,14 +121,33 @@
             <?php
               if($in_data)  {
                 foreach($in_data as &$i)  {
-                  echo "<div class='pub-in-pop-cont'>
+                  switch($i["incident_level"])
+                  {
+                    case 0:
+                      $bcol = "#e6e6e6";
+                      break;
+                    case 1:
+                      $bcol = "#175278";
+                      break;
+                    case 2:
+                      $bcol = "#6b44a3";
+                      break;
+                    case 3:
+                      $bcol = "#ff2e17";
+                      break;
+                    default: 
+                      $bcol = "#1c8d4f";
+                      break;
+                  }
+
+                  echo "<div class='pub-in-pop-cont' style='border-left:10px solid ". $bcol ."'>
                           <span class='pub-in-pop-title'>".$i["incident_title_short"]."</span>
                           <span class='pub-in-pop-org'>".$i["org_title"]."</span>
                           <div class='pub-in-pop-times'>
-                            <span class='pub-in-pop-times-lbl'>Incident starts: </span><span class='pub-in-pop-times-value'>".$i["incident_start"]."</span>
+                            <span class='pub-in-pop-times-lbl'>Starts: </span><span class='pub-in-pop-times-value'>".DBAPI::dt_to_human_readable($i["incident_start"])."</span>
                           </div>
                           <div class='pub-in-pop-times'>
-                            <span class='pub-in-pop-times-lbl'>Incident ends: </span><span class='pub-in-pop-times-value'>".$i["incident_end"]."</span>
+                            <span class='pub-in-pop-times-lbl'>Ends (TBC): </span><span class='pub-in-pop-times-value'>".DBAPI::dt_to_human_readable($i["incident_end"])."</span>
                           </div>
                           <div class='pub-in-pop-link-cont'>
                             <a href='/incident?i=".$i["incident_id"]."' class='pub-in-pop-link'>Read more ➔</a>
@@ -179,7 +208,7 @@
           <?php
             if($pc_data)  {
               echo 'L.marker([' . $pc_data['postcode_lat'] . ',' . $pc_data['postcode_long'] .']).addTo(map)
-                      .bindPopup(\'' . $r_data['pcon_name'] . '\')
+                      .bindPopup(\'Your region: ' . $r_data['pcon_name'] . '\')
                       .openPopup();';
             };
 
@@ -187,7 +216,7 @@
               foreach((array)$in_data as &$a)  {
                 if($a['incident_lat'] and $a['incident_long'])  {
                   echo 'L.marker([' . $a['incident_lat'] . ',' . $a['incident_long'] .']).addTo(map)
-                          .bindPopup(\'' . $a['incident_title_short'] . '\')
+                          .bindPopup(\'<a href="/incident?i=' . $a["incident_id"] . '" class="pub-in-pop-link">' . $a["incident_title_short"] . ' ➔</a> \')
                           .openPopup();';
                 }
               }

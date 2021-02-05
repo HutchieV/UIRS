@@ -434,6 +434,55 @@
       </tr>
 
       <!-- =============================================================================== -->
+      <tr><th colspan=3><h3>get_incident_by_incident_id</h3></th></tr>
+
+      <tr>
+        <td>No input</td>
+        <td></td>
+        <td>false</td>
+        <td class="td-r">
+          <?php 
+            echo (!(LocationAPI::get_incident_by_incident_id($conn, "")) ? 'false' : 'true');
+          ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Invalid characters / incident id</td>
+        <td>EH74839&lt;html></td>
+        <td>false</td>
+        <td class="td-r">
+          <?php 
+            echo (!(LocationAPI::get_incident_by_incident_id($conn, "EH74839<html>")) ? 'false' : 'true');
+          ?>
+        </td>
+      </tr>  
+
+      <tr>
+        <td>Valid, non-existent incident id</td>
+        <td>99999999</td>
+        <td>false</td>
+        <td class="td-r">
+          <?php
+            $r = LocationAPI::get_incident_by_incident_id($conn, "99999999");
+            echo (!($r) ? 'false' : print_r($r));
+          ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Valid, existing incident id</td>
+        <td>1</td>
+        <td>array</td>
+        <td class="td-r">
+          <?php
+            $r = LocationAPI::get_incident_by_incident_id($conn, "1");
+            echo (!($r) ? 'false' : print_r($r));
+          ?>
+        </td>
+      </tr>
+
+      <!-- =============================================================================== -->
       <tr><th colspan=3><h3>get_org_by_incident_id</h3></th></tr>
 
       <tr>
