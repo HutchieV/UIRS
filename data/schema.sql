@@ -147,6 +147,6 @@ GRANT DELETE    ON uirs.* TO 'uirs_backend'@'localhost';
 GRANT SELECT    ON uirs.* TO 'uirs_backend'@'localhost';
 GRANT UPDATE    ON uirs.* TO 'uirs_backend'@'localhost';
 GRANT INSERT    ON uirs.* TO 'uirs_backend'@'localhost';
-GRANT INSERT    ON uirs.* TO 'uirs_backend'@'localhost';
+GRANT ALTER     ON uirs.* TO 'uirs_backend'@'localhost';
 
 FLUSH PRIVILEGES;

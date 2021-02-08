@@ -109,7 +109,34 @@
             echo (!($conn) ? 'false' : 'true');
           ?>
         </td>
-      </tr>  
+      </tr>
+
+      <!-- =============================================================================== -->
+      <tr><th colspan=4><h3>ymd_hm_to_ts</h3></th></tr>
+
+      <tr>
+        <td>Combine valid YYYY-MM-DD and hh:mm times</td>
+        <td>2020-01-01 and 15:00 (1577890800 in Unix time)</td>
+        <td><?php echo "1577890800 (" . date('l, jS F Y \a\t H:i', 1577890800) . ")" ?></td>
+        <td class="td-r">
+          <?php
+            $ts = DBAPI::ymd_hm_to_ts("2020-01-01", "15:00");
+            echo (!($ts) ? 'false' : $ts . " (" . date('l, jS F Y \a\t  H:i', $ts) . ")" );
+          ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Combine valid YYYY-MM-DD and hh:mm times and print as MySQL datetime format</td>
+        <td>2020-01-01 and 15:00 (1577890800 in Unix time)</td>
+        <td><?php echo date('Y-m-d H:i:s', 1577890800) ?></td>
+        <td class="td-r">
+          <?php
+            $ts = DBAPI::ymd_hm_to_dt("2020-01-01", "15:00");
+            echo (!($ts) ? 'false' : $ts );
+          ?>
+        </td>
+      </tr>
 
       <tr><th colspan=4><h2>Location Testing</h2></th></tr>
       <tr><th><h3>Test</h3></th><th><h3>Test Data</h3></th><th><h3>Expected</h3></th><th class="td-r"><h3>Actual</h3></th></tr>
@@ -526,6 +553,55 @@
         <td class="td-r">
           <?php
             $r = LocationAPI::get_org_by_incident_id($conn, "1");
+            echo (!($r) ? 'false' : print_r($r));
+          ?>
+        </td>
+      </tr>
+
+      <!-- =============================================================================== -->
+      <tr><th colspan=3><h3>get_regions_by_incident_id</h3></th></tr>
+
+      <tr>
+        <td>No input</td>
+        <td></td>
+        <td>false</td>
+        <td class="td-r">
+          <?php 
+            echo (!(LocationAPI::get_regions_by_incident_id($conn, "")) ? 'false' : 'true');
+          ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Invalid characters / incident id</td>
+        <td>EH74839&lt;html></td>
+        <td>false</td>
+        <td class="td-r">
+          <?php 
+            echo (!(LocationAPI::get_regions_by_incident_id($conn, "EH74839<html>")) ? 'false' : 'true');
+          ?>
+        </td>
+      </tr>  
+
+      <tr>
+        <td>Valid, non-existent incident id</td>
+        <td>99999999</td>
+        <td>false</td>
+        <td class="td-r">
+          <?php
+            $r = LocationAPI::get_regions_by_incident_id($conn, "99999999");
+            echo (!($r) ? 'false' : print_r($r));
+          ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Valid, existing incident id</td>
+        <td>2</td>
+        <td>array</td>
+        <td class="td-r">
+          <?php
+            $r = LocationAPI::get_regions_by_incident_id($conn, "1");
             echo (!($r) ? 'false' : print_r($r));
           ?>
         </td>

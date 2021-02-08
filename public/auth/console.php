@@ -34,8 +34,6 @@
 
   <body>
 
-    
-
     <nav>
 
       <?php include 'public_nav.php'; ?>

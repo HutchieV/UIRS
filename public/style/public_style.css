@@ -661,6 +661,73 @@ nav {
     /* border:             1px solid var(--col-pub-border); */
 }
 
+.adm-in-cont    {
+    display:            flex;
+    flex-direction:     column;
+    justify-content:    flex-start;
+    align-items:        flex-start;
+}
+
+.adm-in-half-cont {
+    padding:            1rem;
+    width:              100%;
+    /* background-color:   red; */
+}
+
+.adm-in-full-cont {
+    padding:            1rem;
+    width:              100%;
+}
+
+.adm-in-time-cont {
+    display:            flex;
+    flex-direction:     row;
+    justify-content:    space-between;
+    align-items:        stretch;
+}
+
+.adm-log-datetime {
+    width:              48%;
+}
+
+.adm-in-textarea {
+    padding:            0;
+    min-width:          100%;
+    min-height:         10rem;
+}
+
+.adm-log-regions-search {
+    width:              70%;
+}
+
+.adm-log-regions-button {
+    width:              30%;
+    border-left:        0;
+}
+
+.adm-in-textarea {
+    padding:            0.5rem;
+}
+
+#adm-log-regions-selected {
+    min-width:          70%;
+    width:              70%;
+}
+
+@media screen and (min-width: 950px)    {
+    .adm-in-cont    {
+        display:            flex;
+        flex-direction:     row;
+        flex-wrap:          wrap;
+        justify-content:    flex-start;
+        align-items:        flex-start;
+    }
+
+    .adm-in-half-cont {
+        width:              50%;
+    }
+}
+
 /* Desktop */
 @media screen and (min-width: 1600px)    {
     .pub-nav-logo   {

@@ -74,7 +74,7 @@
 
         <div class="pub-i-m-header-right">
 
-          <img src=<?php echo '"' . $in_data["org_icon"] . '"' ?> />
+          <img src=<?php echo '"' . $in_data["org_icon"] . '" alt="' . $in_data["org_title"] . ' logo"'?> />
         
         </div>
 

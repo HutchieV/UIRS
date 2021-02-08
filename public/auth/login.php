@@ -63,7 +63,6 @@
                                 
         setcookie("AUTH_TOKEN", $a_token, null, "/", DOMAIN_NAME, true, true);
         $_SESSION["USER"]       = $p;
-        // $adm_gen_err            = ($_SESSION["USER"]["user_id"]);
         $_SESSION["AUTH_TOKEN"] = $a_token;
         header('Location: /auth/console');
         exit();

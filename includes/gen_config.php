@@ -11,10 +11,12 @@
 
   // echo PHP_VERSION_ID;
 
+
+  $config = parse_ini_file(dirname(__FILE__) . "/../config.ini", true);
   set_include_path(dirname(__FILE__));
 
-  CONST BCRYPT_WORK_FACTOR  = 12;
-  CONST DOMAIN_NAME         = "uirs.localhost";
+  define("BCRYPT_WORK_FACTOR",  $config["security"]["bcrypt_work_factor"]);
+  define("DOMAIN_NAME",         $config["server"]["hostname"]);
 
   if(PHP_VERSION_ID > 70299) {
     session_set_cookie_params([
@@ -52,23 +54,8 @@
     }
   }
 
-  function log_req($conn) {
-    if (!$_SERVER['HTTP_USER_AGENT']) {
-      return $_SERVER['HTTP_USER_AGENT'] = null;
-    }
-
-    $q = $conn->prepare(' INSERT INTO req_log
-                            (log_route, log_ip, log_session, log_request) 
-                          VALUES
-                            (:log_route, :log_ip, :log_session, :log_request)');
-    $q->bindValue(':log_route', $_SERVER['REQUEST_URI']);
-    $q->bindValue(':log_ip', get_ip_address());
-    $q->bindValue(':log_session', session_id());
-    $q->bindValue(':log_request', json_encode(getallheaders())); // NB: Does not store POST data
-    $q->execute();
-  }
-
+  // Get a new connection object and log the request
   $conn = DBAPI::get_db_conn();
-  log_req($conn);
+  DBAPI::log_req($conn, $_SERVER['REQUEST_URI'], get_ip_address(), session_id(), json_encode(getallheaders()));
 
 ?>
