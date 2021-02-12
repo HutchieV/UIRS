@@ -132,7 +132,7 @@
     static function insert_incident($conn, $title_short, $title_long, $active, $level, $start_timestamp, $end_timestamp,
                                     $description, $restrictions, $regions, $org_id, $lat=null, $long=null)
     {
-      echo "Creating new incident";
+      // echo "Creating new incident";
       $q = $conn->prepare(' INSERT INTO incident 
                               (
                                 incident_title_short,
@@ -192,7 +192,7 @@
     static function update_incident( $conn, $title_short, $title_long, $active, $level, $start_timestamp, $end_timestamp,
                                             $description, $restrictions, $regions, $org_id, $iid, $lat=null, $long=null)
     {
-      echo "Updating incident id #" . $iid;
+      // echo "Updating incident id #" . $iid;
       $q = $conn->prepare(' UPDATE incident SET 
                             incident_title_short=:title_short,
                             incident_title_long=:title_long,

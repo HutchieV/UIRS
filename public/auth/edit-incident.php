@@ -453,7 +453,7 @@
         </div>
 
         <div class="adm-in-half-cont">
-          <a href="/auth/console">Go back (disregard details)</a>
+          <a href="/auth/console">Go back (disregard changes)</a>
         </div>
 
         <div class="adm-in-half-cont">
