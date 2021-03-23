@@ -1,12 +1,14 @@
 <?php
   include '/UIRS/includes/gen_config.php';
 
-  if(Token_API::verify_session($conn, false))  {
+  if(TokenAPI::verify_session($conn, false))  {
     header('Location: /auth/console');
     exit();
   }
 
   function get_hash($conn, $u)  {
+
+    DBAPI::conn_test($conn);
 
     $p = null;
     $q = $conn->prepare(' SELECT * FROM user
@@ -28,54 +30,59 @@
   $adm_p_err   = null;
   $adm_gen_err = null;
 
-  if(isset($_GET["r"])) {
-    if($_GET["r"] == "expired") {
-      $adm_gen_err = "Session expired, please sign in again";
-    } else if($_GET["r"] == "logout") {
-      $adm_gen_err = "Successfully logged out";
+  try
+  {
+    if(isset($_GET["r"])) {
+      if($_GET["r"] == "expired") {
+        $adm_gen_err = "Session expired, please sign in again";
+      } else if($_GET["r"] == "logout") {
+        $adm_gen_err = "Successfully logged out";
+      }
     }
-  }
 
-  if( isset($_POST["adm_log_p"]) && !isset($_POST["adm_log_u"]) )  {
-    $adm_u_err = "Please enter a username"; 
-  } else if( isset($_POST["adm_log_u"]) && !isset($_POST["adm_log_p"]) ) {
-    $adm_p_err = "Please enter a password";
-  } else if( isset($_POST["adm_log_u"]) && isset($_POST["adm_log_p"]) ) {
+    if( isset($_POST["adm_log_p"]) && !isset($_POST["adm_log_u"]) )  {
+      $adm_u_err = "Please enter a username"; 
+    } else if( isset($_POST["adm_log_u"]) && !isset($_POST["adm_log_p"]) ) {
+      $adm_p_err = "Please enter a password";
+    } else if( isset($_POST["adm_log_u"]) && isset($_POST["adm_log_p"]) ) {
 
-    $u = sanitize_input($_POST["adm_log_u"]);
-    if($_POST["adm_log_u"] != $u) {
-      $adm_u_err = "Invalid username";
-    } else  {
-
-      $p = get_hash($conn, $u);
-      if(password_verify( $_POST["adm_log_p"], $p["user_password"] ))  {
-
-        $a_token = Token_API::auth_new_token($conn, $p["user_id"], 
-                                      Token_API::get_time_now(),
-                                      Token_API::get_time_plus("1 days"));
-
-        sleep(1);
-
-        if(Token_API::verify_token($conn, $p["user_id"], $a_token)) {
-        } else  {
-          $adm_gen_err = "A system error was encountered, please try again";
-        };
-                                
-        setcookie("AUTH_TOKEN", $a_token, null, "/", DOMAIN_NAME, true, true);
-        $_SESSION["USER"]       = $p;
-        $_SESSION["AUTH_TOKEN"] = $a_token;
-        header('Location: /auth/console');
-        exit();
-
+      $u = sanitize_input($_POST["adm_log_u"]);
+      if($_POST["adm_log_u"] != $u) {
+        $adm_u_err = "Invalid username";
       } else  {
 
-        $adm_u_place = $u;
-        $adm_p_err = "Unknown account or incorrect password";
+        $p = get_hash($conn, $u);
+        if(password_verify( $_POST["adm_log_p"], $p["user_password"] ))  {
 
-      };
+          $a_token = TokenAPI::auth_new_token($conn, $p["user_id"], 
+                                        TokenAPI::get_time_now(),
+                                        TokenAPI::get_time_plus("1 days"));
 
+          sleep(1);
+
+          if(TokenAPI::verify_token($conn, $p["user_id"], $a_token)) {
+          } else  {
+            $adm_gen_err = "A system error was encountered, please try again";
+          };
+                                  
+          setcookie("AUTH_TOKEN", $a_token, null, "/", DOMAIN_NAME, true, true);
+          $_SESSION["USER"]       = $p;
+          $_SESSION["AUTH_TOKEN"] = $a_token;
+          header('Location: /auth/console');
+          exit();
+
+        } else  {
+
+          $adm_u_place = $u;
+          $adm_p_err = "Unknown account or incorrect password";
+
+        };
+      }
     }
-
+  }
+  catch(DatabaseConnException $e)
+  {
+    $UIRS_FATAL_ERROR = "The system is experiencing technical difficulties. We apologise for the inconvenience. (E002)";
   }
 ?>
 
@@ -104,6 +111,8 @@
     </nav>
 
     <main class="pub-main">
+
+      <?php include 'public_error_banner.php'; ?>
 
       <span class="pub-landing-title">Administration Login</span>
 

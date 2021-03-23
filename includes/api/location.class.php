@@ -3,6 +3,10 @@
   class LocationAPI
   {
 
+    public static function conn_test($conn) {
+      if (!isset($conn)) throw new DatabaseConnException("Conn was not set");
+    }
+
     /**
      * Validate a given postcode.
      * 
@@ -51,6 +55,8 @@
      */
     static function get_postcode_by_postcode($conn, $pc)
     {
+      self::conn_test($conn);
+
       $pc = self::validate_postcode($pc);
       if(!$pc) return null;
 
@@ -75,6 +81,8 @@
      */
     static function get_region_by_postcode($conn, $pc)
     {
+      self::conn_test($conn);
+
       $pc = self::validate_postcode($pc);
       if(!$pc) return null;
 
@@ -99,6 +107,8 @@
      */
     static function get_region_by_region_id($conn, $rid)
     {
+      self::conn_test($conn);
+
       $q = $conn->prepare(' SELECT * 
                             FROM pcon
                             WHERE pcon_id=:r
@@ -118,6 +128,8 @@
      */
     static function get_regions_by_incident_id($conn, $iid)
     {
+      self::conn_test($conn);
+
       $q = $conn->prepare(' SELECT pcon.* 
                             FROM pcon
                             INNER JOIN incident_location ON incident_location.pcon_id=pcon.pcon_id
@@ -132,7 +144,8 @@
     static function insert_incident($conn, $title_short, $title_long, $active, $level, $start_timestamp, $end_timestamp,
                                     $description, $restrictions, $regions, $org_id, $lat=null, $long=null)
     {
-      // echo "Creating new incident";
+      self::conn_test($conn);
+
       $q = $conn->prepare(' INSERT INTO incident 
                               (
                                 incident_title_short,
@@ -192,7 +205,8 @@
     static function update_incident( $conn, $title_short, $title_long, $active, $level, $start_timestamp, $end_timestamp,
                                             $description, $restrictions, $regions, $org_id, $iid, $lat=null, $long=null)
     {
-      // echo "Updating incident id #" . $iid;
+      self::conn_test($conn);
+
       $q = $conn->prepare(' UPDATE incident SET 
                             incident_title_short=:title_short,
                             incident_title_long=:title_long,
@@ -231,14 +245,17 @@
 
     static function delete_all_incident_locations_by_incident($conn, $iid)
     {
+      self::conn_test($conn);
+
       $q = $conn->prepare('DELETE FROM incident_location WHERE incident_id=:iid');
       $q->bindValue(':iid', $iid);
       $q->execute();
     }
 
-    /** */
     static function insert_incident_location($conn, $iid, $rid)
     {
+      self::conn_test($conn);
+
       $q = $conn->prepare('INSERT INTO incident_location VALUES (:iid, :rid)');
       $q->bindValue(':iid', $iid);
       $q->bindValue(':rid', $rid);
@@ -257,6 +274,8 @@
      */
     static function get_incidents_by_region_id($conn, $rid)
     {
+      self::conn_test($conn);
+
       $q = $conn->prepare(' SELECT incident.*, organisation.*
                             FROM incident
                             INNER JOIN incident_location ON incident_location.incident_id=incident.incident_id
@@ -279,6 +298,8 @@
      */
     static function get_incident_by_incident_id($conn, $iid)
     {
+      self::conn_test($conn);
+
       $q = $conn->prepare(' SELECT incident.*, organisation.*
                             FROM incident
                             INNER JOIN organisation ON incident.org_id=organisation.org_id
@@ -299,6 +320,8 @@
      */
     static function get_org_by_incident_id($conn, $iid)
     {
+      self::conn_test($conn);
+
       $q = $conn->prepare(' SELECT organisation.* 
                             FROM organisation
                             INNER JOIN incident ON incident.org_id=organisation.org_id
@@ -317,6 +340,8 @@
      */
     static function get_all_regions($conn)
     {
+      self::conn_test($conn);
+      
       $q = $conn->prepare('SELECT * FROM pcon');
       $q->execute();
       

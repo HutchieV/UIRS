@@ -1,6 +1,6 @@
 <?php
 
-  class Token_API {
+  class TokenAPI {
 
     static function get_time_now() {
       return date("Y-m-d H:i:s");
@@ -27,6 +27,10 @@
     static function destroy_auth_session()  {
       self::destroy_auth_token();
       session_destroy();
+    }
+
+    static function get_hash($plain)  {
+      return password_hash($plain, PASSWORD_BCRYPT, $options = [ 'cost' => BCRYPT_WORK_FACTOR ]);
     }
 
     static function auth_new_token($conn, $user_id, $valid_from, $valid_until) {

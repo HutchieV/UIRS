@@ -8,6 +8,7 @@
   require 'api/token.class.php';
   require 'api/location.class.php';
   require 'api/exceptions.class.php';
+  require 'api/mail.class.php';
 
   // echo PHP_VERSION_ID;
 
@@ -55,7 +56,14 @@
   }
 
   // Get a new connection object and log the request
-  $conn = DBAPI::get_db_conn();
-  DBAPI::log_req($conn, $_SERVER['REQUEST_URI'], get_ip_address(), session_id(), json_encode(getallheaders()));
+  try
+  {
+    $conn = DBAPI::get_db_conn();
+    DBAPI::log_req($conn, $_SERVER['REQUEST_URI'], get_ip_address(), session_id(), json_encode(getallheaders()));
+  }
+  catch (Exception $e)
+  {
+    $UIRS_FATAL_ERROR = "The system is experiencing technical difficulties. We apologise for the inconvenience. (E001)";
+  }
 
 ?>

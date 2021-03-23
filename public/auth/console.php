@@ -1,7 +1,7 @@
 <?php
   include '/UIRS/includes/gen_config.php';
 
-  Token_API::verify_session($conn);
+  TokenAPI::verify_session($conn);
 
   function get_incidents($conn) {
     $q = $conn->prepare(' SELECT * FROM incident WHERE org_id=:org_id ');

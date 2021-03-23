@@ -12,6 +12,7 @@ SET FOREIGN_KEY_CHECKS=1;
 
 INSERT INTO organisation (org_id, org_title, org_created) VALUES (1, "Test Organization", NOW());
 INSERT INTO organisation (org_id, org_title, org_created, org_icon) VALUES (2, "Scottish Government", NOW(), "/content/images/scot-gov-logo.svg");
+INSERT INTO organisation (org_id, org_title, org_created, org_icon) VALUES (3, "Police Scotland", NOW(), "/content/images/police-scotland.svg");
 
 INSERT INTO privilege (priv_id, priv_title) VALUES (1, "UIRS Administrator");
 INSERT INTO privilege (priv_id, priv_title) VALUES (2, "Organisation Administrator");
@@ -20,6 +21,10 @@ INSERT INTO privilege (priv_id, priv_title) VALUES (3, "Organisation Member");
 INSERT INTO user (user_username, user_full_name, user_password, user_created, org_id, priv_id) 
 VALUES ("otester01", "Olivia Tester", "$2y$12$oSIhETozRn1q.FbPMPlJdeZnu5PwS5LLUPQQe6YsjYmkIZm6DWpZG",
     NOW(), 2, 1);
+
+INSERT INTO user (user_username, user_full_name, user_password, user_created, org_id, priv_id) 
+VALUES ("ps01", "Andrew Jackson", "$2y$12$oSIhETozRn1q.FbPMPlJdeZnu5PwS5LLUPQQe6YsjYmkIZm6DWpZG",
+    NOW(), 3, 1);
 
 -- Password is "password"
 

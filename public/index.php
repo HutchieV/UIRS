@@ -42,6 +42,8 @@
       $pc_error_msg = $e->message();
     } catch(PDOException $e)  {
       $pc_error_msg = "A system error occured (003), please try again";
+    } catch(DatabaseConnException $e) {
+      $UIRS_FATAL_ERROR = "The system is experiencing technical difficulties. We apologise for the inconvenience. (E002)";
     }
   }
   else if(isset($_GET["r"]))
@@ -60,6 +62,8 @@
       $pc_error_msg = $e->message();
     } catch(PDOException $e)  {
       $pc_error_msg = "A system error occured (003), please try again";
+    } catch(DatabaseConnException $e) {
+      $UIRS_FATAL_ERROR = "The system is experiencing technical difficulties. We apologise for the inconvenience. (E003)";
     }
   }
 
@@ -97,24 +101,48 @@
 
       </div>
 
+      <div class="pub-main pub-i-m-header-inner pub-i-m-header-inner-alert">
+
+        <span class="pub-landing-al-bnr"><strong>Public Notice:</strong> Regional lockdowns in effect</span>
+
+      </div>
+
     </header>
 
     <main class="pub-main">
 
+      <?php include 'public_error_banner.php'; ?>
+
       <section class="pub-desc pub-underline">
-      <span class="pub-i-m-subtitle">What is the UIR System?</span>
+        <span class="pub-i-m-subtitle">What is the UIR System?</span>
 
         This portal provides access to a nationwide database of future and on-going incidents reported by health boards, councils, 
         police departments and national governments. To view data for your region, enter your postcode in the search bar below and
         click search.
       </section>
 
-      <section class="pub-console-cont">
+      <div class="pub-pcon-cont" <?php if(!($r_data)) echo "style='visibility: hidden; margin: 0'" ?>>
+        <?php 
+          if($r_data) {
+            echo  '<span>' . 
+                  $in_count . 
+                  ' incident(s) in the <strong>' . 
+                  $r_data["pcon_name"] . 
+                  '</strong> region (' . 
+                  $r_data["pcon_id"] . 
+                  ')</span>';
+          }
+        ?>
+      </div>
 
+      <section class="pub-console-cont">
         <section class="pub-console-postcode-cont">
-          <form class="pub-console-postcode-form" method="POST">
-            <input id="pub-c-p-input" type="text" placeholder="Enter your postcode" name="postcode" <?php if($pc) echo "value='$pc'"; ?>></input>
-            <input id="pub-c-p-submit" type="submit" Value="Search"></input>
+          <form class="pub-console-postcode-form-cont" method="POST">
+            <label for="pub-c-p-input">Enter a postcode to view incidents in your region</label>
+            <div class="pub-console-postcode-form">
+              <input id="pub-c-p-input" type="text" placeholder="Enter your postcode" name="postcode" <?php if($pc) echo "value='$pc'"; ?>></input>
+              <input id="pub-c-p-submit" type="submit" Value="Search"></input>
+            </div>
           </form>
           <div <?php if(!($pc_error_msg)) echo "style='visibility: hidden; margin: 0'"; ?>class="pub-c-p-error-cont">
             <span class="pub-c-p-error-label">
@@ -122,19 +150,12 @@
             </span>
           </div>
           <div class="pub-c-p-sub-cont">
-            <?php if(!($pc_data)) echo "Enter a postcode to view incidents in your region" ?>
-          </div>
-          <div class="pub-pcon-cont" <?php if(!($r_data)) echo "style='visibility: hidden; margin: 0'" ?>>
             <?php 
-              if($r_data) {
-                echo  '<span>' . 
-                      $in_count . 
-                      ' incident(s) in the <strong>' . 
-                      $r_data["pcon_name"] . 
-                      '</strong> region (' . 
-                      $r_data["pcon_id"] . 
-                      ')</span>';
+              if(isset($rid) && $r_data) 
+              {
+                echo "<a href='/subscribe?r=".$rid."'>✉ Subscribe to email notifications ➔</a>";
               }
+              // else if(!($pc_data)) echo "Enter a postcode to view incidents in your region<br>";
             ?>
           </div>
           <div class="pub-in-cont" <?php if(!($in_data)) echo "style='display: none; margin: 0'" ?>>
@@ -160,7 +181,7 @@
                       break;
                   }
 
-                  echo "<div class='pub-in-pop-cont' style='border-left:10px solid ". $bcol ."'>
+                  echo "<div class='pub-in-pop-cont' style='border-left:10px solid ". $bcol ."; background-color: ".$bcol."10'>
                           <span class='pub-in-pop-title'>".$i["incident_title_short"]."</span>
                           <span class='pub-in-pop-org'>".$i["org_title"]."</span>
                           <div class='pub-in-pop-times'>
@@ -179,7 +200,7 @@
           </div>
         </section>
 
-        <section id="pub-console-map-cont" class="pub-console-map-cont">
+        <section aria-hidden="true" id="pub-console-map-cont" class="pub-console-map-cont">
           <p><strong>Error</strong></p>
           <p>It looks like your browser doesn't have JavaScript enabled. Don't worry, you can still enter your postcode to view current incidents.</p>
         </section>
@@ -293,6 +314,17 @@
           window.onresize = windowResized;
         </script>
 
+      </section>
+
+      <section class="pub-desc pub-desc-contd">
+      <span class="pub-i-m-subtitle">Rights and privacy</span>
+
+        If you provide us with your email address we will only use it to share updates in your chosen regions.<br><br>
+        Once you have submitted your email address, you will be provided with a unique ID that you will be required to provide if you
+        wish you exercise your rights under <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32016R0679">GDPR</a>, which includes
+        the right to view, update and erase your data. Alternatively, every email we send will include a link to automatically unsubscribe from this service.
+        <br><br>
+        If you wish to get in touch about the service, including exercising your rights under GDPR, please contact us via <a href="mailto:contact@uirs.org">contact@uirs.org</a>.
       </section>
 
     </main>

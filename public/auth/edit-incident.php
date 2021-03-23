@@ -1,7 +1,7 @@
 <?php
   include '/UIRS/includes/gen_config.php';
 
-  Token_API::verify_session($conn);
+  TokenAPI::verify_session($conn);
 
   $in_error_msg     = null;
   // $in_input_errors  = [
@@ -214,7 +214,7 @@
     }
   }
 
-  if(isset($_POST["auth_token"]) && Token_API::verify_form_token($_POST["auth_token"]))
+  if(isset($_POST["auth_token"]) && TokenAPI::verify_form_token($_POST["auth_token"]))
   {
     // Data has been submitted to create a new incident
     try
@@ -453,7 +453,7 @@
         </div>
 
         <div class="adm-in-half-cont">
-          <a href="/auth/console">Go back (disregard changes)</a>
+          <a href="/auth/console">Go back (discard changes)</a>
         </div>
 
         <div class="adm-in-half-cont">

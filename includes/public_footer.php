@@ -8,7 +8,7 @@
     </div>
 
     <?php 
-      if(Token_API::verify_session($conn, false))  {
+      if(TokenAPI::verify_session($conn, false))  {
         echo '<div class="pub-footer-item">
                 <span class="pub-footer-subheader">Admin</span>
                 <span>Logged in as ' . $_SESSION["USER"]["user_username"]. '</span><br>

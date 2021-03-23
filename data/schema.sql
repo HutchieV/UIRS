@@ -74,14 +74,18 @@ CREATE TABLE IF NOT EXISTS postcode (
 -- ### SUBSCRIPTION
 CREATE TABLE IF NOT EXISTS subscription (
     sub_id                  BIGINT(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    sub_token               TEXT
+    sub_token               VARCHAR(255),
+    sub_email               VARCHAR(320),
+    sub_created             DATETIME,
+    sub_verified            BOOLEAN
 );
+-- NB We cannot enforce unique email, so have to manually check
 
-CREATE TABLE IF NOT EXISTS subscription_postcode (
+CREATE TABLE IF NOT EXISTS subscription_pcon (
     sub_id                      BIGINT(10) UNSIGNED,
-    postcode_id                 VARCHAR(10),
+    pcon_id                     VARCHAR(15),
     FOREIGN KEY (sub_id)        REFERENCES subscription(sub_id),
-    FOREIGN KEY (postcode_id)   REFERENCES postcode(postcode_id)
+    FOREIGN KEY (pcon_id)       REFERENCES pcon(pcon_id)
 );
 
 

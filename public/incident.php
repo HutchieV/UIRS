@@ -43,6 +43,10 @@
       {
         $in_error_msg = "A system error occured (003), please try again";
       }
+      catch(DatabaseConnException $e)
+      {
+        $UIRS_FATAL_ERROR = "The system is experiencing technical difficulties. We apologise for the inconvenience. (E002)";
+      }
 
     ?>
 
@@ -68,7 +72,9 @@
             ?>
           </span>
 
-          <span class="pub-i-m-id"><?php echo "Posted by: " . $in_data["org_title"]; ?> </span>
+          <span class="pub-i-m-id">
+            <?php echo "Posted by: " . $in_data["org_title"]; ?>
+          </span>
 
         </div>
 
@@ -85,22 +91,35 @@
 
     <main class="pub-main">
 
+      <?php include 'public_error_banner.php'; ?>
+
       <span class="pub-i-m-id"> 
         Last updated: 
         <?php 
           echo DBAPI::dt_to_human_readable($in_data["incident_last_updated"]);
-        ?> 
+        ?>
+        <div class="pub-i-m-share">
+          Share via 
+          <a target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $in_data["incident_title_short"] . ", read more at " . DOMAIN_NAME . "/incident?i=".$in_data['incident_id'] ?>">
+            Twitter
+          </a>
+          or
+          <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo DOMAIN_NAME . "/incident?i=".$in_data['incident_id'] ?>">
+            Facebook
+          </a>
+        </div>
       </span>
 
-        <div class='pub-in-pop-times pub-i-m-times' style="margin-top: 1rem;">
-          <span class='pub-in-pop-times-lbl'>Starts: </span>
-          <span class='pub-in-pop-times-value'> <?php echo DBAPI::dt_to_human_readable($in_data["incident_start"]) ?>  </span>
-        </div>
-        <div class='pub-in-pop-times pub-i-m-times' style="margin-bottom: 1rem;">
-          <span class='pub-in-pop-times-lbl'>Ends (TBC): </span>
-          <span class='pub-in-pop-times-value'> <?php echo DBAPI::dt_to_human_readable($in_data["incident_end"]) ?>    </span>
-        </div>
+      <div class='pub-in-pop-times pub-i-m-times' style="margin-top: 1rem;">
+        <span class='pub-in-pop-times-lbl'>Starts: </span>
+        <span class='pub-in-pop-times-value'> <?php echo DBAPI::dt_to_human_readable($in_data["incident_start"]) ?>  </span>
       </div>
+      <div class='pub-in-pop-times pub-i-m-times' style="margin-bottom: 1rem;">
+        <span class='pub-in-pop-times-lbl'>Ends (TBC): </span>
+        <span class='pub-in-pop-times-value'> <?php echo DBAPI::dt_to_human_readable($in_data["incident_end"]) ?>    </span>
+      </div>
+
+      <a href="javascript:window.history.back();" style="display: inline-block; margin-bottom: 1rem;">🡸 Back</a>
 
       <div class="pub-hr"></div>
 
@@ -110,13 +129,13 @@
         <?php echo $in_data["incident_description"] ?>
       </section>
 
-      <span class="pub-i-m-subtitle"> Restrictions </span>
+      <span class="pub-i-m-subtitle"><?php if(isset($in_data["incident_restrictions"]) && $in_data["incident_restrictions"] !== "          ") echo "Restrictions"; ?></span>
 
       <section class="pub-desc">
         <?php echo $in_data["incident_restrictions"] ?>
       </section>
 
-      <span class="pub-i-m-subtitle"><?php if($in_data["incident_lat"]) echo "Location" ?></span>
+      <span class="pub-i-m-subtitle"><?php if($in_data["incident_lat"]) echo "Location"; ?></span>
 
       <div id="pub-in-map-cont" class="pub-in-map-cont">
 
@@ -156,6 +175,8 @@
           };
         ?>
       </script>
+
+      <a href="javascript:window.history.back();" style="display: inline-block; margin-bottom: 1rem;">🡸 Back</a>
 
     </main>
 

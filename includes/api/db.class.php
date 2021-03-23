@@ -1,7 +1,7 @@
 <?php
 
   class DBAPI {
-
+  
     /**
      * Get a PDO DB connection object
      * 
@@ -22,6 +22,10 @@
       }
     }
 
+    public static function conn_test($conn) {
+      if (!isset($conn)) throw new DatabaseConnException("Conn was not set");
+    }
+
     /**
      * Logs a request to the server
      * 
@@ -33,6 +37,8 @@
      */
     static function log_req($conn, $uri, $ip, $session_id, $headers)
     {
+      self::conn_test($conn);
+
       if (!$_SERVER['HTTP_USER_AGENT']) {
         $_SERVER['HTTP_USER_AGENT'] = null;
       }
@@ -46,6 +52,99 @@
       $q->bindValue(':log_session', session_id());
       $q->bindValue(':log_request', json_encode(getallheaders())); // NB: Does not store POST data
       $q->execute();
+    }
+
+    /**
+     * Returns an email subscription row, searched either
+     * by id or email
+     * 
+     * @param object A PDO connection object
+     * @param int The sub's unique id
+     * @param string The user's email address
+     * @return array The subscription row
+     */
+    static function get_subscription($conn, $id=null, $email=null)
+    {
+      self::conn_test($conn);
+
+      $q = $conn->prepare(' SELECT * 
+                            FROM subscription 
+                            WHERE sub_id=:sub_id OR sub_email=:sub_email');
+      $q->bindValue(':sub_id', $id);
+      $q->bindValue(':sub_email', $email);
+      $q->execute();
+
+      return $q->fetch();
+    }
+
+    /**
+     * Insert a new email subscription
+     * 
+     * @param object A PDO connection object
+     * @param int The sub's unique id
+     * @param string The user's email address
+     * @return array The subscription row
+     */
+    static function insert_subscription($conn, $token, $email)
+    {
+      self::conn_test($conn);
+
+      $q = $conn->prepare(' INSERT INTO subscription
+                              (sub_token, sub_email, sub_created, sub_verified) 
+                            VALUES
+                              (:sub_token, :sub_email, NOW(), "false")');
+      $q->bindValue(':sub_token', $token);
+      $q->bindValue(':sub_email', $email);
+      $q->execute();
+      
+      return self::get_subscription($conn, $token, $email);
+    }
+
+    /**
+     * Get the regions a subscription is linked to
+     * 
+     * @param object A PDO connection object
+     * @param int A sub's unique ID
+     * @param string A user's email address
+     * @return array An array containing all the regions a subscription is linked to 
+     */
+    static function get_sub_regions($conn, $sub_id=null, $email=null)
+    {
+      self::conn_test($conn);
+
+      $q = $conn->prepare(' SELECT  subscription.*, subscription_pcon.* 
+                            FROM    subscription_pcon
+                            JOIN    subscription ON subscription.sub_id=subscription_pcon.sub_id 
+                            WHERE   subscription.sub_id=:sub_id OR subscription.sub_email=:sub_email
+                            ');
+      $q->bindValue(':sub_id', $sub_id);
+      $q->bindValue(':sub_email', $email);
+      $q->execute();
+
+      return $q->fetchAll();
+    }
+
+    /**
+     * Link a subscription with a region
+     * 
+     * @param object A PDO connection object
+     * @param int A sub's unique ID
+     * @param string A region's unique ID
+     * @return int The ID of the link's row
+     */
+    static function insert_sub_region($conn, $sub_id, $rid)
+    {
+      self::conn_test($conn);
+
+      $q = $conn->prepare(' INSERT INTO subscription_pcon
+                              (sub_id, pcon_id) 
+                            VALUES
+                              (:sub_id, :pcon_id)');
+      $q->bindValue(':sub_id',  $sub_id);
+      $q->bindValue(':pcon_id', $rid);
+      $q->execute();
+
+      return $conn->lastInsertId();
     }
 
     /**
@@ -70,7 +169,7 @@
      */
     static function ts_to_human_readable($ts)
     {
-      return date('l, jS F Y', $ts);
+      return date('l, jS M Y', $ts);
     }
 
     /**
@@ -84,7 +183,7 @@
     {
       $ts = self::dt_to_timestamp($dt);
       if(!$ts) return null;
-      return date('D, jS F Y \a\t H:i', $ts);
+      return date('D, jS M Y \a\t H:i', $ts);
     }
 
     /**

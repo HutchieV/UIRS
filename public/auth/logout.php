@@ -3,10 +3,10 @@
 
   if( !isset($_POST["auth_token"])
       || !isset($_SESSION["AUTH_TOKEN"])
-      || !Token_API::verify_form_token($_POST["auth_token"]) )  {
+      || !TokenAPI::verify_form_token($_POST["auth_token"]) )  {
     header('Location: /auth/csrf');
-  } else if ( Token_API::verify_session($conn, false) )  {
-    Token_API::destroy_auth_session();
+  } else if ( TokenAPI::verify_session($conn, false) )  {
+    TokenAPI::destroy_auth_session();
     header('Location: /auth/login?r=logout');
     exit();
   } else {
