@@ -129,7 +129,7 @@
         <?php echo $in_data["incident_description"] ?>
       </section>
 
-      <span class="pub-i-m-subtitle"><?php if(isset($in_data["incident_restrictions"]) && $in_data["incident_restrictions"] !== "          ") echo "Restrictions"; ?></span>
+      <span class="pub-i-m-subtitle"><?php if(isset($in_data["incident_restrictions"]) && !strlen(trim($in_data["incident_restrictions"])) == 0) echo "Restrictions"; ?></span>
 
       <section class="pub-desc">
         <?php echo $in_data["incident_restrictions"] ?>
