@@ -162,6 +162,27 @@ nav {
     padding-top:        20px;
 }
 
+.pub-desc p {
+    margin-bottom:      1.1rem;
+    margin-top:         0.5rem;
+    /* line-height: 1.3em; */
+}
+
+.pub-desc .img-cont {
+    width:              100%;
+    /* max-height:         300px; */
+    display:            flex;
+    justify-content:    center;
+    flex-wrap:          wrap;
+}
+
+.pub-desc .img-cont img {
+    height:             100%;
+    max-height:         300px;
+    width:              auto;
+    margin:             0.5rem;
+}
+
 .pub-underline  {
     border-bottom:      1px solid var(--col-pub-border);
 }
